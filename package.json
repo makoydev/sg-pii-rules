@@ -1,0 +1,30 @@
+{
+  "name": "sg-pii-rules",
+  "version": "0.0.0",
+  "description": "Shared, tested detection rules for Singapore personal data",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "Michael Mendoza",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makoydev/sg-pii-rules.git"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "test": "node --test 'test/**/*.test.ts'",
+    "typecheck": "tsc --noEmit",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "all": "npm run format:write && npm run typecheck && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0",
+    "ajv": "8.20.0",
+    "prettier": "3.9.9",
+    "re2js": "2.8.6",
+    "typescript": "5.9.3"
+  }
+}
