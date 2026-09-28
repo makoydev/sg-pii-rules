@@ -28,9 +28,20 @@ export function isValidNricFin(value: string): boolean {
 }
 
 /**
+ * NRIC/FIN shape with a wrong check letter: a mistyped NRIC, or a
+ * look-alike such as an order number. See ADR 0006.
+ */
+export function hasNricFinShapeButInvalidChecksum(value: string): boolean {
+  return (
+    /^[STFGM]\d{7}[A-Z]$/.test(value.toUpperCase()) && !isValidNricFin(value)
+  )
+}
+
+/**
  * Registry of named validators. Algorithms are specified in VALIDATORS.md;
  * each detector that names a validator must find it here (SPEC.md §3).
  */
 export const validators: Record<string, Validator> = {
-  sg_nric_fin_checksum: isValidNricFin
+  sg_nric_fin_checksum: isValidNricFin,
+  sg_nric_fin_checksum_invalid: hasNricFinShapeButInvalidChecksum
 }

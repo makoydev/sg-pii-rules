@@ -293,92 +293,181 @@
       "id": "nric-hn-wrong-letter-01",
       "kind": "hard_negative",
       "text": "Order reference S9189805F dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "S9189805F"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-02",
       "kind": "hard_negative",
       "text": "Order reference S7238445I dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "S7238445I"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-03",
       "kind": "hard_negative",
       "text": "Order reference T9371181B dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "T9371181B"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-04",
       "kind": "hard_negative",
       "text": "Order reference T0059291F dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "T0059291F"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-05",
       "kind": "hard_negative",
       "text": "Order reference F9197193N dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "F9197193N"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-06",
       "kind": "hard_negative",
       "text": "Order reference F1421846S dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "F1421846S"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-07",
       "kind": "hard_negative",
       "text": "Order reference G8916540N dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "G8916540N"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-08",
       "kind": "hard_negative",
       "text": "Order reference G3918812S dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "G3918812S"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-09",
       "kind": "hard_negative",
       "text": "Order reference M6188872V dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "M6188872V"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-wrong-letter-10",
       "kind": "hard_negative",
       "text": "Order reference M7300453M dispatched",
-      "expect": [],
-      "note": "NRIC-shaped reference with an invalid check letter."
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "M7300453M"
+        }
+      ],
+      "note": "NRIC-shaped reference with an invalid check letter: NRIC_LIKE, not NRIC."
     },
     {
       "id": "nric-hn-ica-example",
       "kind": "hard_negative",
       "text": "Format example from ICA: M1234567B",
-      "expect": [],
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "M1234567B"
+        }
+      ],
       "note": "Illustrative example in the ICA media release of 12 Jul 2021; fails the checksum."
     },
     {
       "id": "nric-hn-pdpc-example",
       "kind": "hard_negative",
       "text": "e.g. S1234567A",
-      "expect": [],
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "S1234567A"
+        }
+      ],
       "note": "Illustrative example in the PDPC NRIC guidelines; fails the checksum."
     },
     {
       "id": "nric-hn-order-number",
       "kind": "hard_negative",
       "text": "Order number T1234567A shipped",
-      "expect": [],
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "T1234567A"
+        }
+      ],
       "note": "NRIC-shaped order number."
+    },
+    {
+      "id": "nric-hn-m-with-fg-letter",
+      "kind": "hard_negative",
+      "text": "M0000008M",
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "M0000008M"
+        }
+      ],
+      "note": "Remainder 8: the F/G table gives M but the M table gives J."
+    },
+    {
+      "id": "nric-hn-f-with-m-letter",
+      "kind": "hard_negative",
+      "text": "F0000004J",
+      "expect": [
+        {
+          "entity": "NRIC_LIKE",
+          "value": "F0000004J"
+        }
+      ],
+      "note": "Remainder 8: the M table gives J but the F/G table gives M."
     },
     {
       "id": "nric-hn-prefix-a",
@@ -441,7 +530,7 @@
       "kind": "hard_negative",
       "text": "last four: 567D",
       "expect": [],
-      "note": "Partial NRIC (PDPC guidelines §5.2); out of scope for this detector."
+      "note": "Partial NRIC (PDPC guidelines §5.2); out of scope for these detectors."
     },
     {
       "id": "nric-hn-separator",
@@ -449,20 +538,6 @@
       "text": "S1234567-D",
       "expect": [],
       "note": "Separator inside the number."
-    },
-    {
-      "id": "nric-hn-m-with-fg-letter",
-      "kind": "hard_negative",
-      "text": "M0000008M",
-      "expect": [],
-      "note": "Remainder 8: the F/G table gives M but the M table gives J."
-    },
-    {
-      "id": "nric-hn-f-with-m-letter",
-      "kind": "hard_negative",
-      "text": "F0000004J",
-      "expect": [],
-      "note": "Remainder 8: the M table gives J but the F/G table gives M."
     },
     {
       "id": "nric-mixed-two-valid",
@@ -487,6 +562,10 @@
         {
           "entity": "NRIC",
           "value": "S2834031A"
+        },
+        {
+          "entity": "NRIC_LIKE",
+          "value": "T2995963A"
         }
       ],
       "note": "The second number has an invalid check letter."

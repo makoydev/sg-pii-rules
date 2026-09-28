@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict'
 import { describe, test } from 'node:test'
-import { isValidNricFin, nricCheckLetter } from '../reference/validators.ts'
+import {
+  hasNricFinShapeButInvalidChecksum,
+  isValidNricFin,
+  nricCheckLetter
+} from '../reference/validators.ts'
 
 describe('sg_nric_fin_checksum', () => {
   // Test vectors computed from the algorithm in VALIDATORS.md using
@@ -82,5 +86,23 @@ describe('sg_nric_fin_checksum', () => {
   test('computes the check letter directly', () => {
     assert.equal(nricCheckLetter('S', '1234567'), 'D')
     assert.equal(nricCheckLetter('M', '1234567'), 'K')
+  })
+})
+
+describe('sg_nric_fin_checksum_invalid', () => {
+  test('accepts the NRIC shape with a wrong check letter', () => {
+    assert.ok(hasNricFinShapeButInvalidChecksum('S1234567A'))
+    assert.ok(hasNricFinShapeButInvalidChecksum('m1234567b'))
+  })
+
+  test('rejects valid NRICs, which belong to sg_nric_fin_checksum', () => {
+    assert.equal(hasNricFinShapeButInvalidChecksum('S1234567D'), false)
+    assert.equal(hasNricFinShapeButInvalidChecksum('M0000008J'), false)
+  })
+
+  test('rejects anything without the NRIC shape', () => {
+    for (const value of ['A1234567D', 'S123456D', 'S12345678D', 'S1234567']) {
+      assert.equal(hasNricFinShapeButInvalidChecksum(value), false, value)
+    }
   })
 })

@@ -45,7 +45,11 @@ Worked example (synthetic): `S1234567`: 2×1 + 7×2 + 6×3 + 5×4 + 4×5 + 3×6 
 - Published illustrative examples fail this check: ICA's `M1234567B` [1] and PDPC's `S1234567A` [4]. They are hard negatives in the fixtures.
 - A partial NRIC such as `567D` is not a full NRIC under PDPC's guidelines (§5.2), though it is still personal data (§5.3) [4]. This validator does not match partial numbers.
 
-**Sources.**
+## sg_nric_fin_checksum_invalid
+
+Accepts a string with the NRIC/FIN shape (`^[STFGM]\d{7}[A-Z]$`, case-insensitive) whose check letter is **wrong** under `sg_nric_fin_checksum`. Used by the `NRIC_LIKE` detector to catch mistyped NRICs and NRIC-shaped look-alikes (ADR 0006). For any NRIC-shaped string, exactly one of the two validators returns true.
+
+## Sources for the NRIC/FIN validators
 
 1. Primary. ICA media release, "New M FIN series to be introduced from 1 January 2022", 12 July 2021. <https://www.ica.gov.sg/news-and-publications/newsroom/media-release/new-m-fin-series-to-be-introduced-from-1-january-2022>
 2. Primary. ICA media release, 29 July 2008. <https://www.ica.gov.sg/news-and-publications/newsroom/media-release/645>

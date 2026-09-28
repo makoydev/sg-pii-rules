@@ -58,10 +58,11 @@ describe('fixtures', () => {
       assert.equal(new Set(ids).size, ids.length)
     })
 
-    test(`${name} kinds agree with expectations`, () => {
+    test(`${name} kinds agree with expectations (SPEC.md §5)`, () => {
       for (const c of file.cases) {
-        if (c.kind === 'hard_negative') assert.equal(c.expect.length, 0, c.id)
-        if (c.kind === 'true_positive') assert.ok(c.expect.length > 0, c.id)
+        const own = c.expect.filter((e) => e.entity === file.entity).length
+        if (c.kind === 'hard_negative') assert.equal(own, 0, c.id)
+        else assert.ok(own > 0, c.id)
       }
     })
   }

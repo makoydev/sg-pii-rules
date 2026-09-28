@@ -40,11 +40,11 @@ For an input text:
 
 Each case has `text` and `expect`: the exact ordered list of `{ entity, value }` that detection must return. An empty `expect` means nothing may be found. Cases compare **values, not offsets**, because offsets differ between languages (UTF-16 units in JavaScript, bytes in Go).
 
-Case `kind` is one of:
+Each fixture file is about one `entity`, and a case's `kind` describes it **relative to that entity**:
 
-- `true_positive`: contains at least one entity to find
-- `hard_negative`: looks like an entity but is not (for example, an NRIC-shaped order number with the wrong check letter); `expect` is empty
-- `mixed`: some of both
+- `true_positive`: `expect` contains at least one match of the file's entity
+- `hard_negative`: looks like the file's entity but isn't, so `expect` contains **no** match of the file's entity. It may still contain matches of other entities: for example, a phone-shaped number inside an email address is a hard negative for `PHONE` that expects one `EMAIL`
+- `mixed`: at least one match of the file's entity plus at least one look-alike that must not match it
 
 All fixture data is synthetic. No real NRIC, phone number or email address may appear. Email fixtures use reserved domains (`example.com`, `example.org`, `example.net`, `.test`).
 

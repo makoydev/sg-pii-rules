@@ -13,6 +13,16 @@
         "https://www.pdpc.gov.sg/organisations/regulations-decisions/regulatory-guidance/advisory-guidelines-on-the-personal-data-protection-act-for-nric-and-other-national-identification-numbers",
         "https://github.com/makoydev/sg-pii-rules/blob/main/VALIDATORS.md#sg_nric_fin_checksum"
       ]
+    },
+    {
+      "id": "sg_nric_fin_like",
+      "entity": "NRIC_LIKE",
+      "description": "NRIC/FIN shape with a check letter that fails the checksum: a mistyped NRIC or an NRIC-shaped look-alike such as an order number. Lower confidence than NRIC; each consumer decides how to treat it (ADR 0006).",
+      "pattern": "(?i)\\b[STFGM]\\d{7}[A-Z]\\b",
+      "validator": "sg_nric_fin_checksum_invalid",
+      "sources": [
+        "https://github.com/makoydev/sg-pii-rules/blob/main/docs/adr/0006-nric-checksum-precision-over-recall.md"
+      ]
     }
   ]
 }

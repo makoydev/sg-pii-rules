@@ -6,6 +6,12 @@ Built with AI assistance (Claude Code) under the same guardrails as Vetted: a wr
 
 The NRIC/FIN checksum, PDPC guidance and IMDA numbering facts were researched from primary sources first, with every claim graded primary, secondary or unverified (`VALIDATORS.md`). A key claim was then spot-checked independently: the M-series rule against GovTech FormSG's source. The implementation was written from the algorithm's description, not copied from any source.
 
+## Decisions changed on human review
+
+| Date       | Proposed by Claude Code                                                                      | Changed by Michael to                                                               | Where    |
+| ---------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | -------- |
+| 2026-09-28 | NRIC detection requires a valid check letter (the brief's rule); a look-alike detector later | Add the `NRIC_LIKE` look-alike detector in v0.1.0, so mistyped NRICs are caught now | ADR 0006 |
+
 ## Exceptions
 
 - The first commit (`LICENSE`, a README stub, `.gitignore`) went directly to `main`, because branch protection needs the branch to exist first.
