@@ -1,5 +1,18 @@
 {
   "$schema": "./schema/detectors.schema.json",
   "version": "0.0.0",
-  "detectors": []
+  "detectors": [
+    {
+      "id": "sg_nric_fin",
+      "entity": "NRIC",
+      "description": "Singapore NRIC and FIN numbers: prefix S, T, F, G or M, seven digits, and a check letter that must pass the checksum. Case-insensitive.",
+      "pattern": "(?i)\\b[STFGM]\\d{7}[A-Z]\\b",
+      "validator": "sg_nric_fin_checksum",
+      "sources": [
+        "https://www.ica.gov.sg/news-and-publications/newsroom/media-release/new-m-fin-series-to-be-introduced-from-1-january-2022",
+        "https://www.pdpc.gov.sg/organisations/regulations-decisions/regulatory-guidance/advisory-guidelines-on-the-personal-data-protection-act-for-nric-and-other-national-identification-numbers",
+        "https://github.com/makoydev/sg-pii-rules/blob/main/VALIDATORS.md#sg_nric_fin_checksum"
+      ]
+    }
+  ]
 }
