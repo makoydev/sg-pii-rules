@@ -18,7 +18,8 @@
     "typecheck": "tsc --noEmit",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
-    "all": "npm run format:write && npm run typecheck && npm test"
+    "all": "npm run format:write && npm run typecheck && npm test",
+    "generate": "node scripts/generate-fixtures.ts && prettier --write fixtures"
   },
   "devDependencies": {
     "@types/node": "24.19.0",

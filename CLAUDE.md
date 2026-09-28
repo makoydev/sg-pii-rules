@@ -8,7 +8,7 @@ Shared detection rules for Singapore personal data, consumed by Vetted (TypeScri
 
 ## Scope
 
-v0.1.0 (issue makoydev/vetted#2): NRIC/FIN (S, T, F, G, M with checksums), Singapore phone numbers, email.
+v0.1.0 (issue makoydev/vetted#2): NRIC/FIN (S, T, F, G, M with checksums), NRIC_LIKE look-alikes (ADR 0006), Singapore phone numbers, email.
 Later (Milestone 2, for Discreet): postal codes and unit numbers, payment cards with Luhn, dates of birth.
 Out of v1: person names (need NER), IBAN, US SSN, medical record numbers, IP addresses.
 
