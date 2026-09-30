@@ -1,6 +1,6 @@
 {
   "$schema": "./schema/detectors.schema.json",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "detectors": [
     {
       "id": "sg_nric_fin",
