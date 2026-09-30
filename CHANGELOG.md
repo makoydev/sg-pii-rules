@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Changed
+
+- Workflow: pull requests target the protected `next` integration branch and are merged by Claude Code once CI passes; Michael reviews and merges `next` into `main`; release candidates may be tagged on `next` (ADR 0008). CI runs on `next`; Dependabot targets `next` and skips major `typescript` and `@types/node` upgrades.
+
 ### Added
 
 - `SPEC.md`: the contract for implementations: RE2 pattern syntax, named validators, detection and overlap algorithm, fixture format, versioning.

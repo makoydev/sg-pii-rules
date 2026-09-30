@@ -1,6 +1,6 @@
 # How this was built
 
-Built with AI assistance (Claude Code) under the same guardrails as Vetted: a written brief kept outside the repo, `CLAUDE.md`, plan approval before code, pull requests only with required CI, and every decision recorded as an ADR for Michael's review. See Vetted's [build log](https://github.com/makoydev/vetted/blob/main/docs/HOW-THIS-WAS-BUILT.md) for roles and the full list of guardrails.
+Built with AI assistance (Claude Code) under the same guardrails as Vetted: a written brief kept outside the repo, `CLAUDE.md`, plan approval before code, pull requests only with required CI, and every decision recorded as an ADR for Michael's review. Since 2026-09-30, Claude Code merges its own CI-green pull requests into the `next` integration branch and Michael reviews the batch before it reaches `main` (ADR 0008). See Vetted's [build log](https://github.com/makoydev/vetted/blob/main/docs/HOW-THIS-WAS-BUILT.md) for roles and the full list of guardrails.
 
 ## How facts were sourced
 
@@ -8,9 +8,10 @@ The NRIC/FIN checksum, PDPC guidance and IMDA numbering facts were researched fr
 
 ## Decisions changed on human review
 
-| Date       | Proposed by Claude Code                                                                      | Changed by Michael to                                                               | Where    |
-| ---------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | -------- |
-| 2026-09-28 | NRIC detection requires a valid check letter (the brief's rule); a look-alike detector later | Add the `NRIC_LIKE` look-alike detector in v0.1.0, so mistyped NRICs are caught now | ADR 0006 |
+| Date       | Proposed by Claude Code                                                                      | Changed by Michael to                                                                             | Where    |
+| ---------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | -------- |
+| 2026-09-28 | NRIC detection requires a valid check letter (the brief's rule); a look-alike detector later | Add the `NRIC_LIKE` look-alike detector in v0.1.0, so mistyped NRICs are caught now               | ADR 0006 |
+| 2026-09-30 | Michael reviews and merges every pull request (the brief's rule)                             | Claude Code merges CI-green pull requests into `next`; Michael reviews and merges `next` → `main` | ADR 0008 |
 
 ## Exceptions
 

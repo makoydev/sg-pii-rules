@@ -23,7 +23,7 @@ Out of v1: person names (need NER), IBAN, US SSN, medical record numbers, IP add
 
 ## How we work
 
-Same as Vetted: one branch and pull request per change, `ai-drafted` label, conventional commits, squash merges, "If asked in an interview" section on every pull request, ADRs in `docs/adr/` marked `Status: drafted by Claude Code, awaiting Michael's review`, `CHANGELOG.md` updated with every change. Run `npm run all` before pushing.
+Same as Vetted: one branch and pull request per change targeting `next` (merged by Claude once CI passes, labelled `ai-merged`; only Michael merges into `main`; releases from `main`, release candidates may be tagged on `next`: ADR 0008), `ai-drafted` label, conventional commits, squash merges, "If asked in an interview" section on every pull request, ADRs in `docs/adr/` marked `Status: drafted by Claude Code, awaiting Michael's review`, `CHANGELOG.md` updated with every change. Run `npm run all` before pushing.
 
 ## Stack
 
