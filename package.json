@@ -1,6 +1,6 @@
 {
   "name": "sg-pii-rules",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Shared, tested detection rules for Singapore personal data",
   "private": true,
   "type": "module",
@@ -19,7 +19,9 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "all": "npm run format:write && npm run typecheck && npm test",
-    "generate": "node scripts/generate-fixtures.ts && prettier --write fixtures"
+    "generate": "node scripts/generate-fixtures.ts && prettier --write fixtures",
+    "measure": "node scripts/measure-corpus.ts 20",
+    "sums": "node scripts/write-sums.ts"
   },
   "devDependencies": {
     "@types/node": "24.19.0",
