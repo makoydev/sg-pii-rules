@@ -19,6 +19,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - `sg_nric_fin_like` detector (`NRIC_LIKE`): NRIC shape with an invalid check letter, catching mistyped NRICs and look-alikes (ADR 0006), with 46 conformance cases.
 - ADR 0006 and `docs/HOW-THIS-WAS-BUILT.md`. ADRs 0001–0006 accepted by Michael.
 
+- `sg_phone` detector (`PHONE`): Singapore numbers per the IMDA National Numbering Plan, with 41 conformance cases.
+- `email` detector (`EMAIL`), with 44 conformance cases on reserved domains only.
+- ADR 0007: phone and email matched by shape, with the known false positives listed.
+
 ### Changed
 
 - `SPEC.md` §5: a fixture case's kind is relative to its file's entity, so a hard negative may expect matches of other entities.
