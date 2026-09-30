@@ -23,6 +23,26 @@
       "sources": [
         "https://github.com/makoydev/sg-pii-rules/blob/main/docs/adr/0006-nric-checksum-precision-over-recall.md"
       ]
+    },
+    {
+      "id": "sg_phone",
+      "entity": "PHONE",
+      "description": "Singapore phone numbers: eight digits starting 3 (internet telephony), 6 (fixed line), 8 or 9 (mobile) per the IMDA National Numbering Plan, optionally split 4-4 by a space or hyphen, optionally preceded by +65, (65), (+65), 0065 or 65.",
+      "pattern": "(?:(?:\\+65|\\(\\+?65\\)|\\b0065|\\b65)[ -]?|\\b)[3689]\\d{3}[ -]?\\d{4}\\b",
+      "sources": [
+        "https://www.imda.gov.sg/regulations-and-licensing-listing/numbering/national-numbering-plan-and-allocation-process",
+        "https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/frameworks-and-policies/numbering/national-numbering-plan-and-allocation-process/imda-national-numbering-plan.pdf"
+      ]
+    },
+    {
+      "id": "email",
+      "entity": "EMAIL",
+      "description": "Email addresses: a local part of letters, digits and . _ % + -, an @, and a domain whose last label is two or more letters. Deliberately permissive: domains may start with a digit.",
+      "pattern": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}\\b",
+      "sources": [
+        "https://www.rfc-editor.org/rfc/rfc5322",
+        "https://www.rfc-editor.org/rfc/rfc2606"
+      ]
     }
   ]
 }
