@@ -2,6 +2,7 @@ version: 2
 updates:
   - package-ecosystem: github-actions
     directory: /
+    target-branch: next
     schedule:
       interval: weekly
     groups:
@@ -12,8 +13,16 @@ updates:
 
   - package-ecosystem: npm
     directory: /
+    target-branch: next
     schedule:
       interval: weekly
+    ignore:
+      # Types must match the node24 runtime; TypeScript majors are upgraded
+      # deliberately, together with Vetted, not by bot.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
     groups:
       npm:
         update-types:
