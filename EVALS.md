@@ -12,7 +12,8 @@ Measured on 2026-09-30 for v0.1.0 with the TypeScript reference implementation, 
 | `EMAIL`     | 22             | 20             | 2     | 44 / 44 pass     |
 | `CARD`      | 24             | 22             | 1     | 47 / 47 pass     |
 | `POSTAL`    | 24             | 21             | 1     | 46 / 46 pass     |
-| **Total**   | **141**        | **128**        | **8** | **277 / 277**    |
+| `UNIT`      | 24             | 21             | 1     | 46 / 46 pass     |
+| **Total**   | **165**        | **149**        | **9** | **323 / 323**    |
 
 **What this does and doesn't show.** The fixtures are the _specification_: they say what the detectors must find and must ignore, and 100% conformance means the reference implementation does exactly that. It is **not** a measure of real-world precision or recall. The cases were written by the same people as the patterns, and synthetic data flatters rule-based detectors.
 
@@ -51,6 +52,10 @@ What the clue rule (ADR 0011) prevents: the JavaScript corpus has 4,063 bare six
 
 Like the JavaScript corpus for cards, this shows the detector stays quiet on code. It says nothing about recall on real addresses, which the fixtures and Discreet's benchmark cover.
 
+### 2d. Unit numbers on real code (added 2026-10-05)
+
+`UNIT` reported **nothing** on either corpus. Both contain hash-number text it had to ignore: 24 (JavaScript) and 198 (Go) places where `#` is followed by a digit, mostly issue references, and 4 looser `#xx-digits` shapes in the Go corpus. These counts come from a one-off breakdown of the same scan.
+
 ## 3. Speed (`npm run measure`)
 
 The reference implementation scanned the 16.27 MB corpus with all four detectors in 5.24 s, **about 3.1 MB/s**. That's fast enough for pull request diffs, which are capped at well under 1 MB by Vetted.
@@ -58,6 +63,6 @@ The reference implementation scanned the 16.27 MB corpus with all four detectors
 ## 4. Known limitations
 
 - False positives: bare eight-digit numbers starting 3, 6, 8 or 9 (constants, IDs); NRIC-shaped reference numbers (as `NRIC_LIKE`); a foreign number whose local part looks Singaporean (`+60 3-9123 4567`); some card-number groups; `icon@2x.png`; `git@github.com:org/repo`. See [ADR 0007](docs/adr/0007-phone-and-email-by-shape.md).
-- False negatives: unusual phone groupings (`91 23 45 67`), obfuscated emails, partial NRICs (`567D`), cards from networks outside the seven covered, postal codes without an address clue, and everything not yet covered (names, street addresses, dates of birth).
+- False negatives: unusual phone groupings (`91 23 45 67`), obfuscated emails, partial NRICs (`567D`), cards from networks outside the seven covered, postal codes without an address clue, unit numbers written without `#` (`Unit 05-123`), and everything not yet covered (names, street names, dates of birth).
 - `CARD` false positives: digits after a decimal point in long floating-point literals (3 in 20 MB of Go source).
 - No labelled real-world data was used, and none can be without real personal data. Discreet's Milestone 2 benchmark (about 5,000 generated samples built from varied templates with typos and noise, rather than from these patterns) will give a more independent recall estimate.

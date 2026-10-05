@@ -14,6 +14,7 @@ Shared, tested detection rules for Singapore personal data, used by [Vetted](htt
 | `EMAIL`     | `email`            | Practical email addresses                                                                                                               | Shape only                                                                                                                 |
 | `CARD`      | `payment_card`     | Payment card numbers, 13–19 digits, optionally grouped by spaces or hyphens                                                             | Luhn check **and** a card network's prefix and length ([ADR 0009](docs/adr/0009-cards-need-luhn-and-network-prefix.md))    |
 | `POSTAL`    | `sg_postal_code`   | Six-digit postal codes **after an address clue** ("Singapore", `S(`, `postal code:`, `postcode=`, `zip:`); only the digits are reported | Valid postal sector, 01–82 except 74 ([ADR 0011](docs/adr/0011-postal-codes-need-an-address-clue.md))                      |
+| `UNIT`      | `sg_unit_number`   | Unit numbers in the `#floor-unit` form: `#05-123`, `#12-34`, `#B1-23A`                                                                  | Shape only: floor 01–99 or B1–B9                                                                                           |
 
 Patterns use **RE2** syntax, so they behave identically in Go and in JavaScript (via `re2js`) and always match in linear time: a hostile input cannot make them backtrack forever.
 
@@ -31,7 +32,8 @@ Read these before relying on the rules. Measured numbers are in [EVALS.md](EVALS
 
 - **Bare eight-digit numbers are ambiguous.** In code, numeric constants such as `67108864` (2²⁶) match `PHONE`. On a 16 MB sample of real JavaScript, almost all `PHONE` hits were constants like these.
 - **Some look-alikes are reported.** NRIC-shaped reference numbers become `NRIC_LIKE`; image names such as `icon@2x.png` and SSH remotes such as `git@github.com:…` match `EMAIL`.
-- **No person names, street addresses or dates of birth yet.** Names need NER. Unit numbers and dates of birth are planned for Milestone 2 (for Discreet).
+- **No person names, street names or dates of birth yet.** Names need NER. Dates of birth are planned for Milestone 2 (for Discreet).
+- **Unit numbers need the `#`.** `Unit 05-123` is not detected, and a hash followed by a floor-unit shape, such as `#12-34` used as a range, is.
 - **Postal codes without an address clue are missed** (a bare `520123`), by design ([ADR 0011](docs/adr/0011-postal-codes-need-an-address-clue.md)).
 - **Card numbers from networks outside the seven listed are missed**, and digits after a decimal point can occasionally match ([ADR 0009](docs/adr/0009-cards-need-luhn-and-network-prefix.md)).
 - **A valid NRIC check letter does not mean the number was issued.** The checksum algorithm was never officially published; see [VALIDATORS.md](VALIDATORS.md) for sources and their grades.
@@ -43,7 +45,7 @@ Needs Node 24 (it runs the TypeScript directly; there is no build step).
 
 ```sh
 npm ci
-npm run all        # format, typecheck, 365 tests
+npm run all        # format, typecheck, 418 tests
 npm run generate   # regenerate fixtures from the seeded generators
 npm run sums       # regenerate SHA256SUMS after changing a vendored file
 npm run measure    # count detector hits on real third-party JavaScript (counts only)

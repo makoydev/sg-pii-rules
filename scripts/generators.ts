@@ -5,6 +5,7 @@ import { buildNricFixtures } from './fixtures-nric.ts'
 import { buildNricLikeFixtures } from './fixtures-nric-like.ts'
 import { buildPhoneFixtures } from './fixtures-phone.ts'
 import { buildPostalFixtures } from './fixtures-postal.ts'
+import { buildUnitFixtures } from './fixtures-unit.ts'
 
 /** Fixture file name → generator. */
 export const generators: Record<string, () => FixtureFile> = {
@@ -13,5 +14,6 @@ export const generators: Record<string, () => FixtureFile> = {
   'phone.json': buildPhoneFixtures,
   'email.json': buildEmailFixtures,
   'card.json': buildCardFixtures,
-  'postal.json': buildPostalFixtures
+  'postal.json': buildPostalFixtures,
+  'unit.json': buildUnitFixtures
 }
