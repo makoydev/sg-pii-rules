@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-06
+
+Four new kinds of Singapore personal data for Discreet (cards, postal codes, unit numbers, dates of birth) and `value` groups in the specification. Reviewed and approved by Michael Mendoza on 2026-10-06; vendored files are byte-identical to `v0.2.0-rc.1`.
+
 ### Added
 
 - `CARD` detector (`payment_card`): 13–19 digit card numbers, optionally grouped by spaces or hyphens, that pass the Luhn check and carry the prefix and length of Visa, Mastercard, American Express, Discover, JCB, UnionPay or Diners Club (ADR 0009). Validator `payment_card_luhn_iin` is specified in `VALIDATORS.md`.
