@@ -49,6 +49,36 @@ Worked example (synthetic): `S1234567`: 2×1 + 7×2 + 6×3 + 5×4 + 4×5 + 3×6 
 
 Accepts a string with the NRIC/FIN shape (`^[STFGM]\d{7}[A-Z]$`, case-insensitive) whose check letter is **wrong** under `sg_nric_fin_checksum`. Used by the `NRIC_LIKE` detector to catch mistyped NRICs and NRIC-shaped look-alikes (ADR 0006). For any NRIC-shaped string, exactly one of the two validators returns true.
 
+## payment_card_luhn_iin
+
+Accepts a payment card number. Spaces and hyphens are removed first; what remains must be 13 to 19 digits that pass the **Luhn check** and start with a **card network prefix** at a length that network issues (ADR 0009).
+
+**Luhn check.** Starting from the rightmost digit (the check digit) and moving left, double every second digit; if doubling gives more than 9, subtract 9. The number passes if the sum of all digits is a multiple of 10. Worked example (the textbook one): `79927398713` sums to 70, so it passes.
+
+**Network prefixes and lengths.** A prefix range compares the number's leading digits with the range's ends, digit for digit.
+
+| Network                   | Prefix (IIN) ranges              | Lengths    |
+| ------------------------- | -------------------------------- | ---------- |
+| Visa                      | 4                                | 13, 16, 19 |
+| Mastercard                | 51–55, 2221–2720                 | 16         |
+| American Express          | 34, 37                           | 15         |
+| Discover                  | 6011, 644–649, 65, 622126–622925 | 16–19      |
+| JCB                       | 3528–3589                        | 16–19      |
+| UnionPay                  | 62                               | 16–19      |
+| Diners Club International | 30, 36, 38–39                    | 14–19      |
+
+Ranges may overlap (622126–622925 is both Discover and UnionPay); a number passes if any row accepts it.
+
+**Limits a consumer must know about.**
+
+- A number that passes is shaped like a card; that doesn't mean it was ever issued. Fixtures use random digits completed with a Luhn digit, so one may coincide with an issued card by chance. None is taken from any person or account.
+- Networks not in the table, such as domestic debit schemes, are not detected.
+
+**Sources.**
+
+10. Primary. Mastercard, "Mastercard 2-Series BIN Impact Checklist (Merchants)", August 2016: the 222100–272099 range, processed like 510000–559999. <https://www.mastercard.us/content/dam/mccom/en-us/documents/merchant-2-series-BIN-impact-checklist-aug-2016.pdf>
+11. Secondary. Wikipedia, "Payment card number", IIN table (checked 5 October 2026). The other networks' ranges and lengths; the card networks' own rule books are not public. <https://en.wikipedia.org/wiki/Payment_card_number>
+
 ## Sources for the NRIC/FIN validators
 
 1. Primary. ICA media release, "New M FIN series to be introduced from 1 January 2022", 12 July 2021. <https://www.ica.gov.sg/news-and-publications/newsroom/media-release/new-m-fin-series-to-be-introduced-from-1-january-2022>

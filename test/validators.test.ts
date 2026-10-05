@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict'
 import { describe, test } from 'node:test'
 import {
+  hasCardNetworkPrefix,
   hasNricFinShapeButInvalidChecksum,
+  isPaymentCard,
+  passesLuhn,
   isValidNricFin,
   nricCheckLetter
 } from '../reference/validators.ts'
@@ -104,5 +107,32 @@ describe('sg_nric_fin_checksum_invalid', () => {
     for (const value of ['A1234567D', 'S123456D', 'S12345678D', 'S1234567']) {
       assert.equal(hasNricFinShapeButInvalidChecksum(value), false, value)
     }
+  })
+})
+
+describe('payment_card_luhn_iin', () => {
+  // Published test numbers and the textbook Luhn example: not issued cards.
+  test('Luhn accepts known-valid numbers and rejects a changed digit', () => {
+    assert.equal(passesLuhn('79927398713'), true)
+    assert.equal(passesLuhn('4111111111111111'), true)
+    assert.equal(passesLuhn('4111111111111112'), false)
+    assert.equal(passesLuhn('378282246310005'), true)
+  })
+
+  test('network prefixes and lengths', () => {
+    assert.equal(hasCardNetworkPrefix('4111111111111111'), true) // Visa 16
+    assert.equal(hasCardNetworkPrefix('411111111111111'), false) // Visa 15
+    assert.equal(hasCardNetworkPrefix('2221000000000009'), true) // Mastercard 2-series, low end
+    assert.equal(hasCardNetworkPrefix('2721000000000004'), false) // just above it
+    assert.equal(hasCardNetworkPrefix('378282246310005'), true) // Amex 15
+    assert.equal(hasCardNetworkPrefix('3782822463100050'), false) // Amex 16
+    assert.equal(hasCardNetworkPrefix('9111111111111111'), false) // no network
+  })
+
+  test('accepts separators and rejects other shapes', () => {
+    assert.equal(isPaymentCard('4111 1111 1111 1111'), true)
+    assert.equal(isPaymentCard('4111-1111-1111-1111'), true)
+    assert.equal(isPaymentCard('4111.1111.1111.1111'), false)
+    assert.equal(isPaymentCard('411111111111'), false)
   })
 })

@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- `CARD` detector (`payment_card`): 13–19 digit card numbers, optionally grouped by spaces or hyphens, that pass the Luhn check and carry the prefix and length of Visa, Mastercard, American Express, Discover, JCB, UnionPay or Diners Club (ADR 0009). Validator `payment_card_luhn_iin` is specified in `VALIDATORS.md`.
+- 47 `CARD` conformance cases (24 true positives, 22 hard negatives, 1 mixed).
+- `npm run measure:go`: the corpus measurement can now scan another directory and file type; used to measure `CARD` on the Go standard library (EVALS.md §2b).
+
 ## [0.1.0] - 2026-10-01
 
 First release: shared detection rules for Singapore personal data, with a written specification, synthetic conformance fixtures, and checksummed files for consumers to vendor. Reviewed and approved by Michael Mendoza on 2026-10-01.

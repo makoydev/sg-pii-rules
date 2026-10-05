@@ -21,6 +21,7 @@
     "all": "npm run format:write && npm run typecheck && npm test",
     "generate": "node scripts/generate-fixtures.ts && prettier --write fixtures",
     "measure": "node scripts/measure-corpus.ts 20",
+    "measure:go": "node scripts/measure-corpus.ts 20 \"$(go env GOROOT)/src\" go",
     "sums": "node scripts/write-sums.ts"
   },
   "devDependencies": {

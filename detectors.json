@@ -43,6 +43,17 @@
         "https://www.rfc-editor.org/rfc/rfc5322",
         "https://www.rfc-editor.org/rfc/rfc2606"
       ]
+    },
+    {
+      "id": "payment_card",
+      "entity": "CARD",
+      "description": "Payment card numbers: 13 to 19 digits, optionally grouped by single spaces or hyphens, that pass the Luhn checksum and start with a prefix used by Visa, Mastercard, American Express, Discover, JCB, UnionPay or Diners Club, at a length that network issues.",
+      "pattern": "\\b\\d(?:[ -]?\\d){12,18}\\b",
+      "validator": "payment_card_luhn_iin",
+      "sources": [
+        "https://www.mastercard.us/content/dam/mccom/en-us/documents/merchant-2-series-BIN-impact-checklist-aug-2016.pdf",
+        "https://en.wikipedia.org/wiki/Payment_card_number"
+      ]
     }
   ]
 }
