@@ -11,7 +11,8 @@ Measured on 2026-09-30 for v0.1.0 with the TypeScript reference implementation, 
 | `PHONE`     | 20             | 20             | 1     | 41 / 41 pass     |
 | `EMAIL`     | 22             | 20             | 2     | 44 / 44 pass     |
 | `CARD`      | 24             | 22             | 1     | 47 / 47 pass     |
-| **Total**   | **117**        | **107**        | **7** | **231 / 231**    |
+| `POSTAL`    | 24             | 21             | 1     | 46 / 46 pass     |
+| **Total**   | **141**        | **128**        | **8** | **277 / 277**    |
 
 **What this does and doesn't show.** The fixtures are the _specification_: they say what the detectors must find and must ignore, and 100% conformance means the reference implementation does exactly that. It is **not** a measure of real-world precision or recall. The cases were written by the same people as the patterns, and synthetic data flatters rule-based detectors.
 
@@ -42,6 +43,14 @@ The JavaScript corpus above contains no 13–19 digit numbers at all, so it says
 
 All 3 were false positives: digits of floating-point literals in compiler and assembler tests. Either check alone would have reported hundreds or thousands; the combination is what makes the detector usable on code (ADR 0009). These counts come from a one-off breakdown of the same scan; `npm run measure:go` prints the final counts.
 
+### 2c. Postal codes on real code (added 2026-10-05)
+
+`POSTAL` reported **nothing** on either corpus: 0 hits in the 16.27 MB JavaScript corpus and 0 in the 19.98 MB Go corpus. No six-digit number in either sat after an address clue.
+
+What the clue rule (ADR 0011) prevents: the JavaScript corpus has 4,063 bare six-digit numbers, and 4,019 of them pass the postal sector check. The Go corpus has 99, of which 69 pass. Without a clue requirement those 4,088 constants would all have been reported. These counts come from a one-off breakdown of the same scan.
+
+Like the JavaScript corpus for cards, this shows the detector stays quiet on code. It says nothing about recall on real addresses, which the fixtures and Discreet's benchmark cover.
+
 ## 3. Speed (`npm run measure`)
 
 The reference implementation scanned the 16.27 MB corpus with all four detectors in 5.24 s, **about 3.1 MB/s**. That's fast enough for pull request diffs, which are capped at well under 1 MB by Vetted.
@@ -49,6 +58,6 @@ The reference implementation scanned the 16.27 MB corpus with all four detectors
 ## 4. Known limitations
 
 - False positives: bare eight-digit numbers starting 3, 6, 8 or 9 (constants, IDs); NRIC-shaped reference numbers (as `NRIC_LIKE`); a foreign number whose local part looks Singaporean (`+60 3-9123 4567`); some card-number groups; `icon@2x.png`; `git@github.com:org/repo`. See [ADR 0007](docs/adr/0007-phone-and-email-by-shape.md).
-- False negatives: unusual phone groupings (`91 23 45 67`), obfuscated emails, partial NRICs (`567D`), cards from networks outside the seven covered, and everything not yet covered (names, addresses, dates of birth).
+- False negatives: unusual phone groupings (`91 23 45 67`), obfuscated emails, partial NRICs (`567D`), cards from networks outside the seven covered, postal codes without an address clue, and everything not yet covered (names, street addresses, dates of birth).
 - `CARD` false positives: digits after a decimal point in long floating-point literals (3 in 20 MB of Go source).
 - No labelled real-world data was used, and none can be without real personal data. Discreet's Milestone 2 benchmark (about 5,000 generated samples built from varied templates with typos and noise, rather than from these patterns) will give a more independent recall estimate.

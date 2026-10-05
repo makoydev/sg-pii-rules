@@ -116,11 +116,22 @@ export function isPaymentCard(value: string): boolean {
 }
 
 /**
+ * Singapore postal code: six digits whose first two (the postal sector) are
+ * 01 to 82, except 74, which is not used. See VALIDATORS.md.
+ */
+export function isSingaporePostalCode(value: string): boolean {
+  if (!/^\d{6}$/.test(value)) return false
+  const sector = Number(value.slice(0, 2))
+  return sector >= 1 && sector <= 82 && sector !== 74
+}
+
+/**
  * Registry of named validators. Algorithms are specified in VALIDATORS.md;
  * each detector that names a validator must find it here (SPEC.md §3).
  */
 export const validators: Record<string, Validator> = {
   sg_nric_fin_checksum: isValidNricFin,
   sg_nric_fin_checksum_invalid: hasNricFinShapeButInvalidChecksum,
-  payment_card_luhn_iin: isPaymentCard
+  payment_card_luhn_iin: isPaymentCard,
+  sg_postal_sector: isSingaporePostalCode
 }

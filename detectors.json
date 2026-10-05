@@ -54,6 +54,17 @@
         "https://www.mastercard.us/content/dam/mccom/en-us/documents/merchant-2-series-BIN-impact-checklist-aug-2016.pdf",
         "https://en.wikipedia.org/wiki/Payment_card_number"
       ]
+    },
+    {
+      "id": "sg_postal_code",
+      "entity": "POSTAL",
+      "description": "Singapore postal codes: six digits with a valid postal sector (01 to 82, except 74), only after an address clue: \"Singapore\" (any case), \"S\" or \"S(\" directly before the digits, or a key such as postal code, postalCode, postcode or zip followed by an optional colon or equals sign and quotes. Only the six digits are reported; the clue is context (ADR 0010, ADR 0011).",
+      "pattern": "(?:(?i:\\bsingapore)[ ,]{1,2}|\\bS\\(?|(?i:\\b(?:postal(?:[ _-]?code)?|post[ _-]?code|zip(?:[ _-]?code)?))[\"']?[ \\t]*[:=]?[ \\t]*[\"']?)(?P<value>\\d{6})\\b",
+      "validator": "sg_postal_sector",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Postal_codes_in_Singapore",
+        "https://www.99.co/singapore/insider/singapore-postal-codes/"
+      ]
     }
   ]
 }
