@@ -4,6 +4,7 @@ import {
   hasCardNetworkPrefix,
   hasNricFinShapeButInvalidChecksum,
   isPaymentCard,
+  isSingaporePostalCode,
   passesLuhn,
   isValidNricFin,
   nricCheckLetter
@@ -134,5 +135,21 @@ describe('payment_card_luhn_iin', () => {
     assert.equal(isPaymentCard('4111-1111-1111-1111'), true)
     assert.equal(isPaymentCard('4111.1111.1111.1111'), false)
     assert.equal(isPaymentCard('411111111111'), false)
+  })
+})
+
+describe('sg_postal_sector', () => {
+  test('accepts sectors 01 to 82 except 74', () => {
+    for (const ok of ['010000', '730001', '750001', '829999'])
+      assert.equal(isSingaporePostalCode(ok), true, ok)
+    for (const bad of [
+      '000123',
+      '740123',
+      '830000',
+      '990000',
+      '52012',
+      '5201234'
+    ])
+      assert.equal(isSingaporePostalCode(bad), false, bad)
   })
 })

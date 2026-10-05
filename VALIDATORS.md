@@ -79,6 +79,19 @@ Ranges may overlap (622126–622925 is both Discover and UnionPay); a number pas
 10. Primary. Mastercard, "Mastercard 2-Series BIN Impact Checklist (Merchants)", August 2016: the 222100–272099 range, processed like 510000–559999. <https://www.mastercard.us/content/dam/mccom/en-us/documents/merchant-2-series-BIN-impact-checklist-aug-2016.pdf>
 11. Secondary. Wikipedia, "Payment card number", IIN table (checked 5 October 2026). The other networks' ranges and lengths; the card networks' own rule books are not public. <https://en.wikipedia.org/wiki/Payment_card_number>
 
+## sg_postal_sector
+
+Accepts a Singapore postal code: exactly six digits whose first two, the **postal sector**, are 01 to 82, except 74. The detector only offers digits that follow an address clue, so this check removes clued numbers that cannot be postal codes, such as `Singapore 990000` (ADR 0011).
+
+**Format.** Postal codes have had six digits since 1995: the first two are the sector, the other four the delivery point [12]. The 81 sectors group into the 28 postal districts still used for property; property guides list sectors 01 to 73 and 75 to 82, and none lists 74 [13].
+
+**Status of the sector list: secondary.** URA's district table, the usual primary reference, returned "not found" when checked on 5 October 2026. The two sources below agree with each other and with several property guides. A sector added later would be missed until this list changes.
+
+**Sources.**
+
+12. Secondary. Wikipedia, "Postal codes in Singapore" (checked 5 October 2026). <https://en.wikipedia.org/wiki/Postal_codes_in_Singapore>
+13. Secondary. 99.co, "Understanding Singapore postal codes: history, evolution, and breakdown by district" (checked 5 October 2026). <https://www.99.co/singapore/insider/singapore-postal-codes/>
+
 ## Sources for the NRIC/FIN validators
 
 1. Primary. ICA media release, "New M FIN series to be introduced from 1 January 2022", 12 July 2021. <https://www.ica.gov.sg/news-and-publications/newsroom/media-release/new-m-fin-series-to-be-introduced-from-1-january-2022>
