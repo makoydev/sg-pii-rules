@@ -17,6 +17,10 @@ The NRIC/FIN checksum, PDPC guidance and IMDA numbering facts were researched fr
 
 On 2026-10-01 Michael reviewed the batch in `next` with the Milestone 1 decision report, accepted ADR 0007, and asked Claude Code to rebase-merge `next` into `main`, tag `v0.1.0` and complete the release on his behalf. The merge into `main` is therefore recorded under his account but performed by Claude Code, after his review.
 
+## Milestone 2 review
+
+On 2026-10-06 Michael reviewed the Milestone 2 batch with the decision report (https://makoydev.github.io/discreet/m2-review/), accepted ADRs 0009–0012 without changes, and approved the release. Claude Code rebase-merged `next` into `main` and tagged `v0.2.0` on his behalf, with vendored files byte-identical to `v0.2.0-rc.1`.
+
 ## Exceptions
 
 - The first commit (`LICENSE`, a README stub, `.gitignore`) went directly to `main`, because branch protection needs the branch to exist first.
