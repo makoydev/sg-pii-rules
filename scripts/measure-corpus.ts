@@ -3,12 +3,15 @@ import { join } from 'node:path'
 import { compile, detect, loadDetectorsFile } from '../reference/detect.ts'
 import { root } from '../test/helpers.ts'
 
-// Runs every detector over real third-party JavaScript (this repo's own
-// node_modules) and prints COUNTS ONLY. Matched values are never printed:
-// third-party files can contain real maintainers' contact details.
-// Usage: node scripts/measure-corpus.ts [maxMegabytes]
+// Runs every detector over real third-party code and prints COUNTS ONLY.
+// Matched values are never printed: third-party files can contain real
+// maintainers' contact details. Defaults to this repo's node_modules (*.js).
+// Usage: node scripts/measure-corpus.ts [maxMegabytes] [directory] [extensions]
+// e.g.   node scripts/measure-corpus.ts 20 "$(go env GOROOT)/src" go
 
 const maxBytes = Number(process.argv[2] ?? 20) * 1024 * 1024
+const corpusDir = process.argv[3] ?? join(root, 'node_modules')
+const extension = new RegExp(`\\.(${process.argv[4] ?? '(c|m)?js'})$`)
 const detectors = compile(loadDetectorsFile(join(root, 'detectors.json')))
 
 function* jsFiles(dir: string): Generator<string> {
@@ -16,7 +19,7 @@ function* jsFiles(dir: string): Generator<string> {
     const path = join(dir, name)
     const stat = statSync(path)
     if (stat.isDirectory()) yield* jsFiles(path)
-    else if (/\.(c|m)?js$/.test(name) && !name.endsWith('.min.js')) yield path
+    else if (extension.test(name) && !name.endsWith('.min.js')) yield path
   }
 }
 
@@ -29,7 +32,7 @@ let files = 0
 let lines = 0
 let elapsed = 0
 
-for (const path of jsFiles(join(root, 'node_modules'))) {
+for (const path of jsFiles(corpusDir)) {
   const text = readFileSync(path, 'utf8')
   if (bytes + text.length > maxBytes) break
   bytes += text.length
@@ -72,8 +75,7 @@ const phoneRepetition = {
 console.log(
   JSON.stringify(
     {
-      corpus:
-        'node_modules/**/*.{js,cjs,mjs} (excluding *.min.js), sorted path order',
+      corpus: `${process.argv[3] ?? 'node_modules'} (files matching ${extension}, excluding *.min.js), sorted path order`,
       files,
       lines,
       megabytes: Number(mb.toFixed(2)),
