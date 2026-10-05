@@ -11,6 +11,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - `POSTAL` detector (`sg_postal_code`): six-digit Singapore postal codes after an address clue, reporting only the digits (ADR 0011). Validator `sg_postal_sector` (01–82 except 74) is specified in `VALIDATORS.md`.
 - `SPEC.md` §2: a pattern may name one capture group `value`; only that group is reported and the rest of the match is required context (ADR 0010). **Implementations must support this to pass the `POSTAL` fixtures.**
 - 46 `POSTAL` conformance cases (24 true positives, 21 hard negatives, 1 mixed).
+- `UNIT` detector (`sg_unit_number`): Singapore unit numbers in the `#floor-unit` form (`#05-123`, `#B1-23A`), shape only. 46 conformance cases (24 true positives, 21 hard negatives, 1 mixed), including full addresses where the unit number and the postal code are both reported.
 - `npm run measure:go`: the corpus measurement can now scan another directory and file type; used to measure `CARD` on the Go standard library (EVALS.md §2b).
 
 ## [0.1.0] - 2026-10-01
