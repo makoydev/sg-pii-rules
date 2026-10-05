@@ -1,6 +1,6 @@
 {
   "$schema": "./schema/detectors.schema.json",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "detectors": [
     {
       "id": "sg_nric_fin",
@@ -72,6 +72,16 @@
       "description": "Singapore unit numbers in the #floor-unit form: #, a two-digit floor 01 to 99 or a basement B1 to B9, a hyphen, two to four digits and an optional capital letter, such as #05-123, #12-34 or #B1-23A. Shape only; written \"Unit 05-123\" without the # is not detected.",
       "pattern": "#(?:B[1-9]|0[1-9]|[1-9]\\d)-\\d{2,4}[A-Z]?\\b",
       "sources": ["https://en.wikipedia.org/wiki/Postal_codes_in_Singapore"]
+    },
+    {
+      "id": "date_of_birth",
+      "entity": "DOB",
+      "description": "Dates of birth: a full date with a four-digit year (19xx or 20xx), only directly after a clue such as DOB, D.O.B., date of birth, birth date or born (on), or a key such as dob, dateOfBirth or birth_date, with an optional colon or equals sign and quotes. Formats: 12/03/1988 (day or month first), 12-03-1988, 12.03.1988, 1988-03-12, 12 Mar 1988 and March 12, 1988. Only the date is reported (ADR 0010, ADR 0012).",
+      "pattern": "(?i:\\b(?:d\\.?o\\.?b\\.?|date[ _-]?of[ _-]?birth|birth[ _-]?date|born(?:[ \\t]+on)?))[\"']?[ \\t]*[:=]?[ \\t]*[\"']?(?P<value>\\d{1,2}[/.-]\\d{1,2}[/.-](?:19|20)\\d{2}|(?:19|20)\\d{2}-\\d{1,2}-\\d{1,2}|\\d{1,2} (?i:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\\.?,? (?:19|20)\\d{2}|(?i:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\\.? \\d{1,2},? (?:19|20)\\d{2})\\b",
+      "validator": "calendar_date",
+      "sources": [
+        "https://github.com/makoydev/sg-pii-rules/blob/main/docs/adr/0012-dates-of-birth-need-a-clue.md"
+      ]
     }
   ]
 }

@@ -3,7 +3,9 @@ import { describe, test } from 'node:test'
 import {
   hasCardNetworkPrefix,
   hasNricFinShapeButInvalidChecksum,
+  isCalendarDate,
   isPaymentCard,
+  isPlausibleDate,
   isSingaporePostalCode,
   passesLuhn,
   isValidNricFin,
@@ -151,5 +153,43 @@ describe('sg_postal_sector', () => {
       '5201234'
     ])
       assert.equal(isSingaporePostalCode(bad), false, bad)
+  })
+})
+
+describe('calendar_date', () => {
+  test('knows month lengths and leap years', () => {
+    assert.equal(isCalendarDate(1992, 2, 29), true)
+    assert.equal(isCalendarDate(1990, 2, 29), false)
+    assert.equal(isCalendarDate(2000, 2, 29), true) // divisible by 400
+    assert.equal(isCalendarDate(1900, 2, 29), false) // divisible by 100
+    assert.equal(isCalendarDate(1990, 4, 31), false)
+    assert.equal(isCalendarDate(1990, 13, 1), false)
+  })
+
+  test('accepts every supported format, day or month first', () => {
+    for (const ok of [
+      '12/03/1988',
+      '3/7/1988',
+      '12-03-1988',
+      '12.03.1988',
+      '03/31/1988',
+      '1988-03-12',
+      '12 Mar 1988',
+      '12 March 1988',
+      '12 Sept. 1988',
+      'March 12, 1988',
+      'mar 12 1988'
+    ])
+      assert.equal(isPlausibleDate(ok), true, ok)
+    for (const bad of [
+      '31/02/1990',
+      '13/13/1990',
+      '00/05/1990',
+      '1990-02-30',
+      '31 April 1990',
+      '12 Foo 1988',
+      '12/03/88'
+    ])
+      assert.equal(isPlausibleDate(bad), false, bad)
   })
 })
