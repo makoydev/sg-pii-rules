@@ -1,19 +1,20 @@
 # Evaluation
 
-Measured on 2026-09-30 for v0.1.0 with the TypeScript reference implementation, Node 24.21.0 on an Apple-silicon Mac. Every number can be reproduced with the command next to it.
+Measured on 2026-09-30 for v0.1.0, and on 2026-10-05 for the detectors added in v0.2.0, with the TypeScript reference implementation, Node 24.21.0 on an Apple-silicon Mac. Every number can be reproduced with the command next to it.
 
 ## 1. Conformance on synthetic fixtures (`npm test`)
 
-| Entity      | True positives | Hard negatives | Mixed | Reference result |
-| ----------- | -------------- | -------------- | ----- | ---------------- |
-| `NRIC`      | 26             | 25             | 2     | 53 / 53 pass     |
-| `NRIC_LIKE` | 25             | 20             | 1     | 46 / 46 pass     |
-| `PHONE`     | 20             | 20             | 1     | 41 / 41 pass     |
-| `EMAIL`     | 22             | 20             | 2     | 44 / 44 pass     |
-| `CARD`      | 24             | 22             | 1     | 47 / 47 pass     |
-| `POSTAL`    | 24             | 21             | 1     | 46 / 46 pass     |
-| `UNIT`      | 24             | 21             | 1     | 46 / 46 pass     |
-| **Total**   | **165**        | **149**        | **9** | **323 / 323**    |
+| Entity      | True positives | Hard negatives | Mixed  | Reference result |
+| ----------- | -------------- | -------------- | ------ | ---------------- |
+| `NRIC`      | 26             | 25             | 2      | 53 / 53 pass     |
+| `NRIC_LIKE` | 25             | 20             | 1      | 46 / 46 pass     |
+| `PHONE`     | 20             | 20             | 1      | 41 / 41 pass     |
+| `EMAIL`     | 22             | 20             | 2      | 44 / 44 pass     |
+| `CARD`      | 24             | 22             | 1      | 47 / 47 pass     |
+| `POSTAL`    | 24             | 21             | 1      | 46 / 46 pass     |
+| `UNIT`      | 24             | 21             | 1      | 46 / 46 pass     |
+| `DOB`       | 24             | 21             | 1      | 46 / 46 pass     |
+| **Total**   | **189**        | **170**        | **10** | **369 / 369**    |
 
 **What this does and doesn't show.** The fixtures are the _specification_: they say what the detectors must find and must ignore, and 100% conformance means the reference implementation does exactly that. It is **not** a measure of real-world precision or recall. The cases were written by the same people as the patterns, and synthetic data flatters rule-based detectors.
 
@@ -56,13 +57,17 @@ Like the JavaScript corpus for cards, this shows the detector stays quiet on cod
 
 `UNIT` reported **nothing** on either corpus. Both contain hash-number text it had to ignore: 24 (JavaScript) and 198 (Go) places where `#` is followed by a digit, mostly issue references, and 4 looser `#xx-digits` shapes in the Go corpus. These counts come from a one-off breakdown of the same scan.
 
+### 2e. Dates of birth on real code (added 2026-10-05)
+
+`DOB` reported **nothing** on either corpus. The JavaScript corpus has no dates in the supported formats; the Go corpus has 19, all real calendar dates (release dates and similar), and none follows a birth clue, so none was reported (ADR 0012). These counts come from a one-off breakdown of the same scan.
+
 ## 3. Speed (`npm run measure`)
 
-The reference implementation scanned the 16.27 MB corpus with all four detectors in 5.24 s, **about 3.1 MB/s**. That's fast enough for pull request diffs, which are capped at well under 1 MB by Vetted.
+With the four v0.1.0 detectors, the reference implementation scanned the 16.27 MB corpus at **about 3.1 MB/s**. With all eight v0.2.0 detectors it scans **about 1.8 MB/s** on the JavaScript corpus and **1.9 MB/s** on the Go corpus (measured 2026-10-05). That's still fast enough for pull request diffs, which Vetted caps well under 1 MB, and for chat requests in Discreet.
 
 ## 4. Known limitations
 
 - False positives: bare eight-digit numbers starting 3, 6, 8 or 9 (constants, IDs); NRIC-shaped reference numbers (as `NRIC_LIKE`); a foreign number whose local part looks Singaporean (`+60 3-9123 4567`); some card-number groups; `icon@2x.png`; `git@github.com:org/repo`. See [ADR 0007](docs/adr/0007-phone-and-email-by-shape.md).
-- False negatives: unusual phone groupings (`91 23 45 67`), obfuscated emails, partial NRICs (`567D`), cards from networks outside the seven covered, postal codes without an address clue, unit numbers written without `#` (`Unit 05-123`), and everything not yet covered (names, street names, dates of birth).
+- False negatives: unusual phone groupings (`91 23 45 67`), obfuscated emails, partial NRICs (`567D`), cards from networks outside the seven covered, postal codes without an address clue, unit numbers written without `#` (`Unit 05-123`), dates of birth without a clue right before them or with two-digit years, and everything not covered (names, street names).
 - `CARD` false positives: digits after a decimal point in long floating-point literals (3 in 20 MB of Go source).
 - No labelled real-world data was used, and none can be without real personal data. Discreet's Milestone 2 benchmark (about 5,000 generated samples built from varied templates with typos and noise, rather than from these patterns) will give a more independent recall estimate.

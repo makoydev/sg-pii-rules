@@ -125,6 +125,64 @@ export function isSingaporePostalCode(value: string): boolean {
   return sector >= 1 && sector <= 82 && sector !== 74
 }
 
+const MONTHS = [
+  'jan',
+  'feb',
+  'mar',
+  'apr',
+  'may',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'oct',
+  'nov',
+  'dec'
+]
+
+/** True if day/month/year is a real calendar date (leap years included). */
+export function isCalendarDate(
+  year: number,
+  month: number,
+  day: number
+): boolean {
+  if (month < 1 || month > 12 || day < 1) return false
+  const leap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  return day <= days[month - 1]
+}
+
+/**
+ * A date written as 12/03/1988 (day or month first), 12-03-1988, 12.03.1988,
+ * 1988-03-12, 12 Mar 1988 or March 12, 1988 that exists in the calendar.
+ * Deliberately does not compare with today, so results never change with
+ * the date the code runs (VALIDATORS.md).
+ */
+export function isPlausibleDate(value: string): boolean {
+  let m = /^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/.exec(value)
+  if (m) {
+    const [a, b, y] = [Number(m[1]), Number(m[2]), Number(m[3])]
+    return isCalendarDate(y, b, a) || isCalendarDate(y, a, b)
+  }
+  m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(value)
+  if (m) return isCalendarDate(Number(m[1]), Number(m[2]), Number(m[3]))
+  m = /^(\d{1,2}) ([a-z]+)\.?,? (\d{4})$/i.exec(value)
+  if (m)
+    return isCalendarDate(
+      Number(m[3]),
+      MONTHS.indexOf(m[2].slice(0, 3).toLowerCase()) + 1,
+      Number(m[1])
+    )
+  m = /^([a-z]+)\.? (\d{1,2}),? (\d{4})$/i.exec(value)
+  if (m)
+    return isCalendarDate(
+      Number(m[3]),
+      MONTHS.indexOf(m[1].slice(0, 3).toLowerCase()) + 1,
+      Number(m[2])
+    )
+  return false
+}
+
 /**
  * Registry of named validators. Algorithms are specified in VALIDATORS.md;
  * each detector that names a validator must find it here (SPEC.md §3).
@@ -133,5 +191,6 @@ export const validators: Record<string, Validator> = {
   sg_nric_fin_checksum: isValidNricFin,
   sg_nric_fin_checksum_invalid: hasNricFinShapeButInvalidChecksum,
   payment_card_luhn_iin: isPaymentCard,
-  sg_postal_sector: isSingaporePostalCode
+  sg_postal_sector: isSingaporePostalCode,
+  calendar_date: isPlausibleDate
 }

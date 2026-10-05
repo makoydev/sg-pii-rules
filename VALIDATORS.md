@@ -92,6 +92,14 @@ Accepts a Singapore postal code: exactly six digits whose first two, the **posta
 12. Secondary. Wikipedia, "Postal codes in Singapore" (checked 5 October 2026). <https://en.wikipedia.org/wiki/Postal_codes_in_Singapore>
 13. Secondary. 99.co, "Understanding Singapore postal codes: history, evolution, and breakdown by district" (checked 5 October 2026). <https://www.99.co/singapore/insider/singapore-postal-codes/>
 
+## calendar_date
+
+Accepts a date that exists in the calendar, in one of these forms: `12/03/1988`, `12-03-1988` or `12.03.1988` (read day-first **or** month-first: it passes if either reading is a real date), `1988-03-12`, `12 Mar 1988` or `12 March 1988` (optional full stop after the month and comma before the year), and `March 12, 1988`. Month names are matched on their first three letters, in any case. The year is four digits; the detector limits it to 1900–2099.
+
+A real date means: month 1 to 12, day from 1 to the month's length, with 29 February only in leap years (divisible by 4, except centuries not divisible by 400).
+
+**It does not compare with today's date**, so a future date after a birth clue passes. Results never depend on when the code runs (ADR 0012).
+
 ## Sources for the NRIC/FIN validators
 
 1. Primary. ICA media release, "New M FIN series to be introduced from 1 January 2022", 12 July 2021. <https://www.ica.gov.sg/news-and-publications/newsroom/media-release/new-m-fin-series-to-be-introduced-from-1-january-2022>

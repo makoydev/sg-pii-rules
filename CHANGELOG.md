@@ -12,7 +12,12 @@ All notable changes to this project are documented here. The format follows [Kee
 - `SPEC.md` §2: a pattern may name one capture group `value`; only that group is reported and the rest of the match is required context (ADR 0010). **Implementations must support this to pass the `POSTAL` fixtures.**
 - 46 `POSTAL` conformance cases (24 true positives, 21 hard negatives, 1 mixed).
 - `UNIT` detector (`sg_unit_number`): Singapore unit numbers in the `#floor-unit` form (`#05-123`, `#B1-23A`), shape only. 46 conformance cases (24 true positives, 21 hard negatives, 1 mixed), including full addresses where the unit number and the postal code are both reported.
+- `DOB` detector (`date_of_birth`): full dates directly after a birth clue, reporting only the date (ADR 0012). Validator `calendar_date` checks the date exists, reading `12/03/1988` day-first or month-first, without comparing with today. 46 conformance cases (24 true positives, 21 hard negatives, 1 mixed).
 - `npm run measure:go`: the corpus measurement can now scan another directory and file type; used to measure `CARD` on the Go standard library (EVALS.md §2b).
+
+### Changed
+
+- Version 0.2.0 in `detectors.json` and `package.json`. No existing fixture's expectation changed, so this is a minor version (SPEC.md §6); consumers must support `value` groups (SPEC.md §2) for the new `POSTAL` and `DOB` fixtures.
 
 ## [0.1.0] - 2026-10-01
 

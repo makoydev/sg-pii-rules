@@ -1,6 +1,6 @@
 {
   "name": "sg-pii-rules",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Shared, tested detection rules for Singapore personal data",
   "private": true,
   "type": "module",
