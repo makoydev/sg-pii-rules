@@ -8,7 +8,11 @@ interface CompiledDetector {
   order: number
   pattern: RE2JS
   validator?: Validator
+  /** True if the pattern names a `value` group to report (SPEC.md §2). */
+  hasValueGroup: boolean
 }
+
+const VALUE_GROUP = /\(\?P<value>/
 
 export function loadDetectorsFile(path: string): DetectorsFile {
   return JSON.parse(readFileSync(path, 'utf8')) as DetectorsFile
@@ -32,7 +36,13 @@ export function compile(
         )
       }
     }
-    return { spec, order, pattern: RE2JS.compile(spec.pattern), validator }
+    return {
+      spec,
+      order,
+      pattern: RE2JS.compile(spec.pattern),
+      validator,
+      hasValueGroup: VALUE_GROUP.test(spec.pattern)
+    }
   })
 }
 
@@ -43,14 +53,17 @@ export function detect(text: string, detectors: CompiledDetector[]): Match[] {
   for (const detector of detectors) {
     const matcher = detector.pattern.matcher(text)
     while (matcher.find()) {
-      const value = matcher.group()
+      // With a `value` group, only that part is reported; the rest of the
+      // match is context that must be present (SPEC.md §2, ADR 0010).
+      const group = detector.hasValueGroup ? 'value' : 0
+      const value = matcher.group(group)
       if (value === null || value.length === 0) continue
       if (detector.validator && !detector.validator(value)) continue
       candidates.push({
         entity: detector.spec.entity,
         value,
-        start: matcher.start(),
-        end: matcher.end(),
+        start: matcher.start(group),
+        end: matcher.end(group),
         order: detector.order
       })
     }

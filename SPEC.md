@@ -15,7 +15,7 @@ This is the contract every implementation (the TypeScript reference here, Vetted
 Each detector has an `id`, the `entity` it finds, a `pattern` and an optional `validator`.
 
 - **Pattern syntax is RE2**, the regex dialect of Go's `regexp` package. It has no backreferences and no lookaround, so matching always runs in linear time and a hostile input cannot cause catastrophic backtracking (ReDoS). JavaScript implementations must use an RE2 engine (the reference uses `re2js`), not the built-in `RegExp`, because the two dialects differ.
-- A pattern's **whole match** is the candidate value. Capture groups have no meaning.
+- A pattern's **whole match** is the candidate value, unless the pattern has a capture group named `value`, written `(?P<value>…)`. Then that group's text and position are the candidate, and the rest of the match is **context**: it must be present, but it is not reported. For example, `Singapore 520123` reports only `520123` as a postal code (ADR 0010). A pattern has at most one named group, and it must be called `value`; other capture groups have no meaning.
 - Patterns are ASCII-oriented: `\b`, `\d` and `\w` use RE2's ASCII definitions.
 
 ## 3. Validators
@@ -26,7 +26,7 @@ A validator is a named function from the candidate value to true or false. It re
 
 For an input text:
 
-1. For each detector, in file order, find every non-overlapping match of its pattern, scanning left to right.
+1. For each detector, in file order, find every non-overlapping match of its pattern, scanning left to right, and take its candidate: the `value` group if the pattern has one, otherwise the whole match (§2). Steps 2 to 4 use the candidate's text and position.
 2. Drop candidates whose validator returns false.
 3. **Resolve overlaps across detectors.** Sort candidates by start position, then by length (longest first), then by detector order in `detectors.json`. Walk the sorted list, keeping a list of accepted matches:
    - if the candidate starts at or after the end of the last accepted match, accept it;

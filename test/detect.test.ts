@@ -73,4 +73,27 @@ describe('detect', () => {
   test('rejects non-RE2 syntax such as backreferences', () => {
     assert.throws(() => run('aa', [spec('x', 'X', '(a)\\1')]))
   })
+
+  test('reports only the value group when a pattern names one', () => {
+    const specs = [spec('kv', 'KV', 'key=(?P<value>\\d+)')]
+    assert.deepEqual(run('a key=42 and key=7, not 9', specs), [
+      { entity: 'KV', value: '42' },
+      { entity: 'KV', value: '7' }
+    ])
+  })
+
+  test('resolves overlaps on the value group, not the whole match', () => {
+    // The context "id:" overlaps nothing; the value "123" ties with NUM's
+    // "123", and the earlier detector wins the tie.
+    const specs = [
+      spec('num', 'NUM', '\\d+'),
+      spec('id', 'ID', 'id:(?P<value>\\d+)')
+    ]
+    assert.deepEqual(run('id:123', specs), [{ entity: 'NUM', value: '123' }])
+  })
+
+  test('skips a match whose value group did not take part', () => {
+    const specs = [spec('opt', 'OPT', 'x(?:=(?P<value>\\d+))?')]
+    assert.deepEqual(run('x x=5', specs), [{ entity: 'OPT', value: '5' }])
+  })
 })

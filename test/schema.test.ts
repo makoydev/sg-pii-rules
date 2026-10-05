@@ -23,6 +23,16 @@ describe('detectors.json', () => {
   })
 
   for (const detector of detectors.detectors) {
+    test(`${detector.id}: names no capture group other than value`, () => {
+      const names = [...detector.pattern.matchAll(/\(\?P?<(\w+)>/g)].map(
+        (m) => m[1]
+      )
+      assert.ok(
+        names.length <= 1 && names.every((n) => n === 'value'),
+        names.join()
+      )
+    })
+
     test(`${detector.id}: pattern compiles as RE2`, () => {
       assert.doesNotThrow(() => RE2JS.compile(detector.pattern))
     })
