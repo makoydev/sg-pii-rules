@@ -25,9 +25,9 @@
     "sums": "node scripts/write-sums.ts"
   },
   "devDependencies": {
-    "@types/node": "24.19.0",
+    "@types/node": "24.19.2",
     "ajv": "8.20.0",
-    "prettier": "3.9.9",
+    "prettier": "3.9.10",
     "re2js": "2.8.6",
     "typescript": "5.9.3"
   }
